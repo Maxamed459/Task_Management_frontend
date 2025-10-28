@@ -7,7 +7,7 @@ export const registerSchema = z
       .min(3, "Username must be at least 3 characters long")
       .max(20, "Username too long"),
     email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 6 characters"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
     confirm: z.string(),
   })
   .refine((data) => data.password === data.confirm, {
@@ -19,7 +19,7 @@ export const loginSchema = z.object({
     .string()
     .min(3, "Username must be at least 3 characters long")
     .max(20, "Username too long"),
-  password: z.string().min(8, "Password must be at least 6 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
 export type loginFormData = z.infer<typeof loginSchema>;
