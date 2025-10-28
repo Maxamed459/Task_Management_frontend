@@ -1,8 +1,11 @@
 export interface UserRegistration {
-  username: string;
-  email: string;
-  password: string;
-  confirmation: string;
+  user: {
+    username: string;
+    email: string;
+    password: string;
+    confirmation: string;
+  };
+  token: string;
 }
 export interface UserLogin {
   username: string;
