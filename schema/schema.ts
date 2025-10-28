@@ -14,5 +14,13 @@ export const registerSchema = z
     message: "Passwords do not match",
     path: ["confirm"],
   });
+export const loginSchema = z.object({
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters long")
+    .max(20, "Username too long"),
+  password: z.string().min(8, "Password must be at least 6 characters"),
+});
 
+export type loginFormData = z.infer<typeof loginSchema>;
 export type registerFormData = z.infer<typeof registerSchema>;
