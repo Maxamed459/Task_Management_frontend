@@ -1,6 +1,6 @@
 "use client";
 import { registerFormData, registerSchema } from "@/schema/schema";
-import { register } from "@/state/authentication/autheSlice";
+import { register } from "@/state/authentication/authSlice";
 import { useAppDispatch, useAppSelector } from "@/state/store";
 import { LockKeyhole, Mail, User } from "lucide-react";
 import Link from "next/link";
@@ -42,7 +42,7 @@ export default function RegisterPage() {
 
   return (
     <div className="flex items-center justify-center w-full h-screen">
-      <div className="w-xl max-w-3xl border border-black/15 shadow-lg rounded-md">
+      <div className="w-xl max-w-[95%] border border-black/15 shadow-lg rounded-md">
         <form onSubmit={handleSubmit} className="p-4">
           {error && (
             <p className="text-red-600 bg-red-300 p-4 rounded-md">{error}</p>
@@ -132,10 +132,7 @@ export default function RegisterPage() {
             </div>
             <p className="text-[15px]">
               Already have an account?{" "}
-              <Link
-                className="font-bold underline text-blue-600"
-                href={"login"}
-              >
+              <Link className="font-semibold text-blue-600" href={"login"}>
                 login
               </Link>
             </p>
