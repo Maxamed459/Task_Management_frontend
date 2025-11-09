@@ -3,6 +3,9 @@ import { UserRegistration, User, authState } from "@/types/types";
 import axios, { AxiosError } from "axios";
 import { AUTH_BASE_URL } from "../baseURL";
 import { loginFormData, registerFormData } from "@/schema/schema";
+import { Navigation2Off } from "lucide";
+
+
 
 const initialState: authState = {
   user: null,
@@ -10,6 +13,8 @@ const initialState: authState = {
   loading: false,
   error: null,
 };
+
+const storedUser = typeof window !== "undefined" ? localStorage.getItem("user") : null;
 
 export const register = createAsyncThunk(
   "auth/register",
@@ -21,12 +26,23 @@ export const register = createAsyncThunk(
       });
       return res.data;
     } catch (error) {
-      const axiosError = error as AxiosError<{ message: string }>;
-      const message =
-        axiosError.response?.data?.message ||
-        axiosError.message ||
-        "Request failed";
-      return rejectWithValue(message);
+      const axiosError = error as AxiosError<any>;
+      // Handle field-specific errors (e.g., {"username":["A user with that username already exists."]})
+      if (axiosError.response?.data) {
+        const errorData = axiosError.response.data;
+        // If it's an object with field errors, return the full object
+        if (typeof errorData === 'object' && !errorData.message) {
+          return rejectWithValue(errorData);
+        }
+        // If it has a message field, return that
+        if (errorData.message) {
+          return rejectWithValue(errorData.message);
+        }
+        // Otherwise return the whole data object
+        return rejectWithValue(errorData);
+      }
+      // Fallback to axios error message
+      return rejectWithValue(axiosError.message || "Request failed");
     }
   }
 );
@@ -40,12 +56,23 @@ export const login = createAsyncThunk(
       });
       return res.data;
     } catch (error) {
-      const axiosError = error as AxiosError<{ message: string }>;
-      const message =
-        axiosError.response?.data?.message ||
-        axiosError.message ||
-        "Request failed";
-      return rejectWithValue(message);
+      const axiosError = error as AxiosError<any>;
+      // Handle field-specific errors (e.g., {"username":["A user with that username already exists."]})
+      if (axiosError.response?.data) {
+        const errorData = axiosError.response.data;
+        // If it's an object with field errors, return the full object
+        if (typeof errorData === 'object' && !errorData.message) {
+          return rejectWithValue(errorData);
+        }
+        // If it has a message field, return that
+        if (errorData.message) {
+          return rejectWithValue(errorData.message);
+        }
+        // Otherwise return the whole data object
+        return rejectWithValue(errorData);
+      }
+      // Fallback to axios error message
+      return rejectWithValue(axiosError.message || "Request failed");
     }
   }
 );
@@ -73,11 +100,13 @@ const authSlice = createSlice({
           state.error = null;
           if (action.payload) state.user = action.payload.user;
           if (action.payload) state.token = action.payload.token;
+          localStorage.setItem("user", JSON.stringify(action.payload.user));
           localStorage.setItem("token", JSON.parse(action.payload.token));
         }
       )
       .addCase(register.rejected, (state, action) => {
-        (state.loading = false), (state.error = action.payload as string);
+        state.loading = false;
+        state.error = (action.payload ?? null) as string | Record<string, string[]> | null;
       })
       .addCase(login.pending, (state) => {
         (state.loading = true), (state.error = null);
@@ -89,11 +118,13 @@ const authSlice = createSlice({
           state.error = null;
           if (action.payload) state.user = action.payload.user;
           if (action.payload) state.token = action.payload.token;
-          localStorage.setItem("token", JSON.parse(action.payload.token));
+          localStorage.setItem("user", JSON.stringify(action.payload.user));
+          localStorage.setItem("token", (action.payload.token));
         }
       )
       .addCase(login.rejected, (state, action) => {
-        (state.loading = false), (state.error = action.payload as string);
+        state.loading = false;
+        state.error = (action.payload ?? null) as string | Record<string, string[]> | null;
       });
   },
 });
