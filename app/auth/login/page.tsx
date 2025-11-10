@@ -67,7 +67,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      router.push("/users");
+      router.push("/dashboard");
     }
   }, [user, router]);
   return (
