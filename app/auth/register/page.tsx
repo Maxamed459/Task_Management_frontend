@@ -74,7 +74,7 @@ export default function RegisterPage() {
   }, [user, router]);
   return (
     <div className="flex items-center justify-center w-full h-screen">
-      <div className="w-xl max-w-[95%] border border-black/15 shadow-lg rounded-md">
+      <div className="w-xl max-w-[95%] border border-black/15 shadow-lg rounded-md mt-20">
         <form onSubmit={handleSubmit} className="p-4">
           <div className="flex flex-col p-2">
             <div className="grid mb-8">
