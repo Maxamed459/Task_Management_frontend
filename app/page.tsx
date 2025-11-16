@@ -16,7 +16,7 @@ export default function Home() {
         </div>
           <div className="flex gap-4">
                 <button className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-800 rounded-lg text-white text-sm hover:bg-gradient-to-l hover:shadow-md hover:shadow-purple-800 duration-300 hover:scale-105">
-                    <Link href="/auth/register w-full">Get Started</Link>
+                    <Link href="/auth/register">Get Started</Link>
                 </button>
             </div>
             <img src="/profiles.png" alt="" className="w-24 mt-2" />
