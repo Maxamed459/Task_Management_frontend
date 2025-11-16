@@ -31,10 +31,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header>
+        <Providers>
+        <header className="shadow-xs shadow-purple-800">
           <Header />
         </header>
-        <Providers>{children}</Providers>
+        {children}
+        </Providers>
       </body>
     </html>
   );
