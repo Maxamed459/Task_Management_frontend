@@ -1,26 +1,30 @@
 export interface UserRegistration {
-  user: {
-    username: string;
-    email: string;
-    password: string;
-    confirmation: string;
+  data: {
+    user: {
+      id: number;
+      full_name: string;
+      email: string;
   };
-  token: string;
+  access_token: string;
+  refresh_token: string;
 }
+  }
+  
 export interface UserLogin {
   username: string;
   password: string;
 }
 
 export interface User {
-  username: string;
+  id: number;
+  full_name: string;
   email: string;
-  password: string;
 }
 
 export interface authState {
   user: User | null;
-  token: string | null;
+  access_token: string | null;
+  refresh_token: string | null;
   loading: boolean;
   error: string | Record<string, string[]> | null;
 }
