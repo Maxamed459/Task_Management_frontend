@@ -11,7 +11,8 @@ export default function RegisterPage() {
   const dispatch = useAppDispatch();
   const { user, loading, error } = useAppSelector((state) => state.auth);
   const [userData, setUserData] = useState<registerFormData>({
-    username: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
     confirm: "",
@@ -74,7 +75,7 @@ export default function RegisterPage() {
   }, [user, router]);
   return (
     <div className="flex items-center justify-center w-full h-screen">
-      <div className="w-xl max-w-[95%] border border-black/15 shadow-lg rounded-md mt-20">
+      <div className="w-xl max-w-[95%] border border-black/15 shadow-lg rounded-md mt-10">
         <form onSubmit={handleSubmit} className="p-4">
           <div className="flex flex-col p-2">
             <div className="grid mb-8">
@@ -85,23 +86,41 @@ export default function RegisterPage() {
                 Enter your info to create account
               </p>
             </div>
-            <div className="grid gap-2 mb-4 relative">
-              <label htmlFor="username">Username</label>
-
-              <input
-                name="username"
-                value={userData.username}
-                onChange={handleChange}
-                type="text"
-                id="username"
-                className="px-10 py-2 rounded-md outline-1 outline-gray-600 focus:outline-2 focus:outline-blue-600 group"
-                placeholder="Enter your username"
-              />
-              {errors.username && typeof errors.username === "string" && (
-                <p className="text-red-500 text-sm">{errors.username}</p>
-              )}
-              <User className="absolute left-2 top-10 cursor-pointer text-blue-600 w-5" />
+            <div className="w-full flex gap-2">
+              <div className="grid gap-2 mb-4 relative">
+                <label htmlFor="first_name">Fist Name</label>
+                <input
+                  name="first_name"
+                  value={userData.first_name}
+                  onChange={handleChange}
+                  type="text"
+                  id="first_name"
+                  className="px-10 py-2 rounded-md outline-1 outline-gray-600 focus:outline-2 focus:outline-blue-600 w-full"
+                  placeholder="Enter your first name"
+                />
+                {errors.first_name && typeof errors.first_name === "string" && (
+                  <p className="text-red-500 text-sm">{errors.first_name}</p>
+                )}
+                <User className="absolute left-2 top-10 cursor-pointer text-blue-600 w-5" />
+              </div>
+              <div className="grid gap-2 mb-4 relative">
+                <label htmlFor="last_name">Last Name</label>
+                <input
+                  name="last_name"
+                  value={userData.last_name}
+                  onChange={handleChange}
+                  type="text"
+                  id="last_name"
+                  className="px-10 py-2 rounded-md outline-1 outline-gray-600 focus:outline-2 focus:outline-blue-600 w-full"
+                  placeholder="Enter your last name"
+                />
+                {errors.last_name && typeof errors.last_name === "string" && (
+                  <p className="text-red-500 text-sm">{errors.last_name}</p>
+                )}
+                <User className="absolute left-2 top-10 cursor-pointer text-blue-600 w-5" />
+              </div>
             </div>
+            
             <div className="grid gap-2 mb-4 relative">
               <label htmlFor="email">Email</label>
               <input
