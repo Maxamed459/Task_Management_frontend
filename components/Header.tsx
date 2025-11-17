@@ -12,18 +12,14 @@ export default function Header () {
                 <h1 className="text-2xl font-bold text-blue-600">T<span className="text-slate-800">asky</span></h1>
             </Link>
             
-            <nav>
+            <nav className="hidden md:block">
                 <ul className="flex items-center gap-8">
                     {user ? (
                         <>
                             <li><Link href="/dashboard">Dashboard</Link></li>
                             <li><Link href="#">My Tasks</Link></li>
                             <li><Link href="#">Completed Tasks</Link></li>
-                            <li>
-                                <button className="px-4 py-2 bg-linear-to-r from-pink-700 to-red-800 rounded-lg text-white text-sm hover:bg-linear-to-l hover:shadow-md hover:shadow-pink-800 duration-300 hover:scale-105">
-                            <Link href="#">Logout</Link>
-                    </button>
-                            </li>
+                            
                         </>
                     ) : (
                         <>
@@ -36,8 +32,18 @@ export default function Header () {
                     
                 </ul>
             </nav>
-            {!user && (
+            {user ? (
                 <div className="flex items-center gap-4">
+                    <button className="px-4 py-2 bg-linear-to-r from-pink-700 to-red-800 rounded-lg text-white text-sm hover:bg-linear-to-l hover:shadow-md hover:shadow-pink-800 duration-300 hover:scale-105">
+                        <Link href="#">Logout</Link>
+                    </button>
+                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-linear-to-r from-purple-600 to-blue-600 text-center">
+                        <p className="text-center text-xl text-white font-medium">{user.full_name.charAt(0).toUpperCase()}</p>
+                    </div>
+                </div>
+                
+            ) : (
+                <div className="flex items-center gap-6">
                     <button className="px-4 py-2 bg-linear-to-r from-blue-600 to-purple-800 rounded-lg text-white text-sm hover:bg-linear-to-l hover:shadow-md hover:shadow-purple-800 duration-300 hover:scale-105">
                         <Link href="/auth/login">Login</Link>
                     </button>
