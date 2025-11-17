@@ -2,10 +2,14 @@ import z from "zod";
 
 export const registerSchema = z
   .object({
-    username: z
+    first_name: z
       .string()
-      .min(3, "Username must be at least 3 characters long")
-      .max(20, "Username too long"),
+      .min(3, "first name must be at least 3 characters long")
+      .max(10, "first name too long"),
+    last_name: z
+      .string()
+      .min(3, "last name must be at least 3 characters long")
+      .max(10, "last name too long"),
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirm: z.string(),
@@ -15,10 +19,7 @@ export const registerSchema = z
     path: ["confirm"],
   });
 export const loginSchema = z.object({
-  username: z
-    .string()
-    .min(3, "Username must be at least 3 characters long")
-    .max(20, "Username too long"),
+  email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
