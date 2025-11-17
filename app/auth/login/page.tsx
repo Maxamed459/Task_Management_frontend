@@ -11,7 +11,7 @@ export default function LoginPage() {
   const dispatch = useAppDispatch();
   const { user, loading, error } = useAppSelector((state) => state.auth);
   const [userData, setUserData] = useState<loginFormData>({
-    username: "",
+    email: "",
     password: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -87,21 +87,21 @@ export default function LoginPage() {
               </p>
             </div>
             <div className="grid gap-2 mb-4 relative">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="email">Email</label>
 
               <input
-                name="username"
-                value={userData.username}
+                name="email"
+                value={userData.email}
                 onChange={handleChange}
                 type="text"
-                id="username"
+                id="email"
                 className="px-10 py-2 rounded-md outline-1 outline-gray-600 focus:outline-2 focus:outline-blue-600 group"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
               />
-              {errors.username && typeof errors.username === "string" && (
-                <p className="text-red-500 text-sm">{errors.username}</p>
+              {errors.email && typeof errors.email === "string" && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
               )}
-              <User className="absolute left-2 top-10 cursor-pointer text-blue-600 w-5" />
+              <Mail className="absolute left-2 top-10 cursor-pointer text-blue-600 w-5" />
             </div>
             <div className="grid gap-2 mb-4 relative">
               <label htmlFor="password">Password</label>
