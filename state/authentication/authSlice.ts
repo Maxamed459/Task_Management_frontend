@@ -3,13 +3,12 @@ import { UserRegistration, User, authState } from "@/types/types";
 import axios, { AxiosError } from "axios";
 import { AUTH_BASE_URL } from "../baseURL";
 import { loginFormData, registerFormData } from "@/schema/schema";
-import { Navigation2Off } from "lucide";
-
 
 
 const initialState: authState = {
   user: null,
-  token: null,
+  access_token: null,
+  refresh_token: null,
   loading: false,
   error: null,
 };
@@ -98,10 +97,12 @@ const authSlice = createSlice({
         (state, action: PayloadAction<UserRegistration>) => {
           state.loading = false;
           state.error = null;
-          if (action.payload) state.user = action.payload.user;
-          if (action.payload) state.token = action.payload.token;
-          localStorage.setItem("user", JSON.stringify(action.payload.user));
-          localStorage.setItem("token", JSON.parse(action.payload.token));
+          if (action.payload) state.user = action.payload.data.user;
+          if (action.payload) state.access_token = action.payload.data.access_token;
+          if (action.payload) state.refresh_token = action.payload.data.refresh_token;
+          localStorage.setItem("user", JSON.stringify(action.payload.data.user));
+          localStorage.setItem("access_token", action.payload.data.access_token);
+          localStorage.setItem("refresh_token", action.payload.data.refresh_token);
         }
       )
       .addCase(register.rejected, (state, action) => {
@@ -116,10 +117,12 @@ const authSlice = createSlice({
         (state, action: PayloadAction<UserRegistration>) => {
           state.loading = false;
           state.error = null;
-          if (action.payload) state.user = action.payload.user;
-          if (action.payload) state.token = action.payload.token;
-          localStorage.setItem("user", JSON.stringify(action.payload.user));
-          localStorage.setItem("token", (action.payload.token));
+          if (action.payload) state.user = action.payload.data.user;
+          if (action.payload) state.access_token = action.payload.data.access_token;
+          if (action.payload) state.refresh_token = action.payload.data.refresh_token;
+          localStorage.setItem("user", JSON.stringify(action.payload.data.user));
+          localStorage.setItem("access_token", action.payload.data.access_token);
+          localStorage.setItem("refresh_token", action.payload.data.refresh_token);
         }
       )
       .addCase(login.rejected, (state, action) => {
