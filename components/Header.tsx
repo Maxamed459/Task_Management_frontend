@@ -4,7 +4,6 @@ import Link from "next/link";
 
 export default function Header () {
     const {user} = useAppSelector((state) => state.auth)
-    console.log("Hereis the user; ",user)
     return(
 
         <div className="text-center w-full max-w-[90%] mx-auto flex items-center justify-between py-4">
