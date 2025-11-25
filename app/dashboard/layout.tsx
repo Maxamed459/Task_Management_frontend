@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import {Sidebar, SidebarItem} from "@/components/Sidebar";
-import { CircleCheckBig, CopyPlus, HelpCircle, Home, LifeBuoy, ListChecks, Settings } from "lucide-react";
+import { ChevronFirst, CircleCheckBig, CopyPlus, HelpCircle, Home, LifeBuoy, ListChecks, Settings } from "lucide-react";
+import ExpandIcon from "@/components/ExpandIcon";
+import { SidebarProvider } from "@/components/SidebarProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +30,8 @@ export default function DashboardLayout({children}: {
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
             <Providers>
-              <div className="flex">
+              <SidebarProvider>
+              <div className="flex relative">
                 <Sidebar>
                   <SidebarItem icon={<Home size={20} />} text="Dashboard" href="/dashboard"/>
                   <SidebarItem icon={<CopyPlus size={20} />} text="Add Task" href="/dashboard/add-tasks" />
@@ -38,9 +41,10 @@ export default function DashboardLayout({children}: {
                   <SidebarItem icon={<Settings size={20} />} text="Settings" href="/dashboard/settings" />
                   <SidebarItem icon={<HelpCircle size={20} />} text="Help" href="/dashboard/help" />
                 </Sidebar>
+                <ExpandIcon />
                 {children}
               </div>
-            
+            </SidebarProvider>
             </Providers>
         </body>
     </html>
