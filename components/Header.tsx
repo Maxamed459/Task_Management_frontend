@@ -1,9 +1,17 @@
 "use client"
 import { useAppSelector } from "@/state/store";
 import Link from "next/link";
+import { logout } from "@/state/authentication/authSlice";
+import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 
 export default function Header () {
+    const redirect = useRouter();
     const {user} = useAppSelector((state) => state.auth)
+    const logout = () => {
+        logout();
+        redirect.push('/auth/login');
+    }
     return(
 
         <div className="text-center w-full max-w-[90%] mx-auto flex items-center justify-between py-4">
@@ -33,9 +41,18 @@ export default function Header () {
             </nav>
             {user ? (
                 <div className="flex items-center gap-4">
-                    <button className="px-4 py-2 bg-linear-to-r from-pink-700 to-red-800 rounded-lg text-white text-sm hover:bg-linear-to-l hover:shadow-md hover:shadow-pink-800 duration-300 hover:scale-105">
-                        <Link href="#">Logout</Link>
+                    <form onSubmit={(e) => {
+                        e.preventDefault();
+                        localStorage.removeItem("user");
+                        localStorage.removeItem("access_token");
+                        localStorage.removeItem("refresh_token");
+                        redirect.push("/auth/login");
+                    }}>
+                    <button className="px-4 py-2 bg-linear-to-r from-pink-700 to-red-800 rounded-lg text-white text-sm hover:bg-linear-to-l hover:shadow-md hover:shadow-pink-800 duration-300 hover:scale-105 flex items-center gap-2" type="submit">
+                        <LogOut />
+                        Logout
                     </button>
+                    </form>
                     <div className="w-10 h-10 flex items-center justify-center rounded-full bg-linear-to-r from-purple-600 to-blue-600 text-center">
                         <p className="text-center text-xl text-white font-medium">{user.full_name.charAt(0).toUpperCase()}</p>
                     </div>
