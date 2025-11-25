@@ -1,17 +1,16 @@
 "use client";
 import { useAppSelector } from "@/state/store";
-import { ChevronFirst, ChevronLast, LogOutIcon } from "lucide-react";
+import { LogOutIcon } from "lucide-react";
 import Image from "next/image";
-import { createContext, useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSidebar } from "@/components/SidebarProvider";
 
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
     const { expanded } = useSidebar();
     const { user } = useAppSelector((state) => state.auth);
-
+    const redirect = useRouter();
     return (
         <aside className={`h-screen ${
             expanded ? "w-75" : "w-0 hidden"
@@ -47,7 +46,17 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
                             <h4 className="font-semibold">{user?.full_name}</h4>
                             <span className="text-xs">{user?.email}</span>
                         </div>
-                        <LogOutIcon className="text-black" size={20} />
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            localStorage.removeItem("user");
+                            localStorage.removeItem("access_token");
+                            localStorage.removeItem("refresh_token");
+                            redirect.push("/auth/login");
+                        }}>
+                            <button type="submit">
+                                <LogOutIcon className="text-black" size={20} />
+                            </button>
+                    </form>
                     </div>
                 </div>
             </nav>
