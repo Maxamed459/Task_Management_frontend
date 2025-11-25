@@ -1,4 +1,6 @@
+import { title } from "process";
 import z from "zod";
+import { de } from "zod/locales";
 
 export const registerSchema = z
   .object({
@@ -29,6 +31,16 @@ export const userSchema = z.object({
   username: z.string(),
   email: z.string().email(),
 });
+
+export const taskSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  due_date: z.string().refine((date) => !isNaN(Date.parse(date)), {
+    message: "Invalid date format",
+  }),
+  priority: z.enum(["low", "medium", "high"]),
+  is_completed: z.boolean(),
+})
 
 export type UserData = z.infer<typeof userSchema>
 export type loginFormData = z.infer<typeof loginSchema>;
