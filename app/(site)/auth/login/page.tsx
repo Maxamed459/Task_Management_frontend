@@ -48,51 +48,6 @@ export default function LoginPage() {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   Swal.fire({
-  //     title: "Please wait...",
-  //     text: "Logging you in",
-  //     allowOutsideClick: false,
-  //     didOpen: () => {
-  //       Swal.showLoading();
-  //     },
-  //   });
-
-  //   const result = loginSchema.safeParse(userData);
-  //   Swal.fire({
-  //     title: "Welcome back",
-  //     icon: "success",
-  //     draggable: true
-  //   });
-
-  //   if (!result.success) {
-  //     const fieldErrors: Record<string, string> = {};
-  //     result.error.issues.forEach((err) => {
-  //       if (err.path[0]) fieldErrors[err.path[0].toString()] = err.message;
-  //     });
-  //     setErrors(fieldErrors);
-  //     Swal.fire({
-  //       title: "Invalid Input",
-  //       text: "Please fix the highlighted fields.",
-  //       icon: "error",
-  //     });
-  //     return;
-  //   }
-
-  //   setErrors({});
-  //   Swal.fire({
-  //     title: "Please wait...",
-  //     text: "Logging you in",
-  //     allowOutsideClick: false,
-  //     didOpen: () => {
-  //       Swal.showLoading();
-  //     },
-  //   });
-    
-  //   dispatch(login(userData));
-  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -136,7 +91,7 @@ export default function LoginPage() {
     const res = await dispatch(login(userData));
 
     // If login reducer returns error
-    if (!res.payload?.error) {
+    if (res.payload?.error) {
       console.log(res.payload?.error)
       Swal.close();
       Swal.fire({
@@ -154,7 +109,7 @@ export default function LoginPage() {
     Swal.fire({
       title: "Welcome back!",
       icon: "success",
-      timer: 2000,
+      timer: 3000,
       showConfirmButton: false
     });
 
