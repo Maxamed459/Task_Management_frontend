@@ -6,6 +6,7 @@ import { LockKeyhole, Mail, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
 export default function RegisterPage() {
   const dispatch = useAppDispatch();
@@ -51,7 +52,7 @@ export default function RegisterPage() {
 
   const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const result = registerSchema.safeParse(userData);
@@ -62,11 +63,60 @@ export default function RegisterPage() {
         if (err.path[0]) fieldErrors[err.path[0].toString()] = err.message;
       });
       setErrors(fieldErrors);
+      // ❌ STOP here — do not show success or loading
+      Swal.fire({
+        title: "Invalid Input",
+        text: "Please fix the highlighted fields.",
+        icon: "error",
+      });
       return;
     }
 
     setErrors({});
-    dispatch(register(userData));
+
+      // 2️⃣ Show loading
+    Swal.fire({
+      title: "Please wait...",
+      text: "Logging you in",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      const res = await dispatch(register(userData));
+
+      if(res.payload?.error) {
+        Swal.close();
+        Swal.fire({
+          title: "Login Failed",
+          text: res.payload.error,
+          icon: "error"
+        });
+        return;
+      }
+
+      Swal.close();
+
+      Swal.fire({
+        title: "Registration Successful",
+        text: "You can now log in with your credentials.",
+        icon: "success",
+        timer: 3000,
+        showConfirmButton: false
+      })
+      
+    } catch (error) {
+      // If dispatch or API fails
+      Swal.close();
+      Swal.fire({
+        title: "Something went wrong",
+        text: "Try again later",
+        icon: "error"
+      });
+    }
+
   };
   useEffect(() => {
     if (user) {
