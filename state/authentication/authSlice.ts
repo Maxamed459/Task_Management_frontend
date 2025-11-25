@@ -26,21 +26,16 @@ export const register = createAsyncThunk(
       return res.data;
     } catch (error) {
       const axiosError = error as AxiosError<any>;
-      // Handle field-specific errors (e.g., {"username":["A user with that username already exists."]})
       if (axiosError.response?.data) {
         const errorData = axiosError.response.data;
-        // If it's an object with field errors, return the full object
         if (typeof errorData === 'object' && !errorData.message) {
           return rejectWithValue(errorData);
         }
-        // If it has a message field, return that
         if (errorData.message) {
           return rejectWithValue(errorData.message);
         }
-        // Otherwise return the whole data object
         return rejectWithValue(errorData);
       }
-      // Fallback to axios error message
       return rejectWithValue(axiosError.message || "Request failed");
     }
   }
@@ -56,21 +51,16 @@ export const login = createAsyncThunk(
       return res.data;
     } catch (error) {
       const axiosError = error as AxiosError<any>;
-      // Handle field-specific errors (e.g., {"username":["A user with that username already exists."]})
       if (axiosError.response?.data) {
         const errorData = axiosError.response.data;
-        // If it's an object with field errors, return the full object
         if (typeof errorData === 'object' && !errorData.message) {
           return rejectWithValue(errorData);
         }
-        // If it has a message field, return that
         if (errorData.message) {
           return rejectWithValue(errorData.message);
         }
-        // Otherwise return the whole data object
         return rejectWithValue(errorData);
       }
-      // Fallback to axios error message
       return rejectWithValue(axiosError.message || "Request failed");
     }
   }
@@ -84,7 +74,8 @@ const authSlice = createSlice({
       state.user = null;
       state.error = null;
       localStorage.removeItem("user");
-      localStorage.removeItem("token");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
     },
   },
   extraReducers: (builder) => {
