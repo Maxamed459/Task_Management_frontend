@@ -4,7 +4,7 @@ import { LogOutIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useSidebar } from "@/components/SidebarProvider";
+import { useSidebar } from "@/components/providers/SidebarProvider";
 
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
