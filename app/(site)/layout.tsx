@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { Provider } from "react-redux";
 import { store } from "@/state/store";
-import { Providers } from "@/components/Provodirs";
+import { Providers } from "@/components/providers/Provodirs";
 import Header from "@/components/Header";
 
 const geistSans = Geist({
