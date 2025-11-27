@@ -1,7 +1,7 @@
 "use client"
 
 import { ChevronFirst, ChevronLast, PanelLeft } from "lucide-react";
-import { useSidebar } from "@/components/SidebarProvider";
+import { useSidebar } from "@/components/providers/SidebarProvider";
 
 export default function ExpandIcon() {
   const { expanded, toggle } = useSidebar();
