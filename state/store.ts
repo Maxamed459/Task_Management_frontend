@@ -6,9 +6,13 @@ const preloadedUser =
   typeof window !== "undefined"
     ? JSON.parse(localStorage.getItem("user") || "null")
     : null;
-const preloadedToken =
+const preloadedAccess_token =
     typeof window !== "undefined"
-      ? localStorage.getItem("token") || "null"
+      ? localStorage.getItem("access_token") || "null"
+      : null;
+const preloadedRefresh_token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("refresh_token") || "null"
       : null;
 
 export const store = configureStore({
@@ -18,7 +22,8 @@ export const store = configureStore({
   preloadedState: {
     auth: {
       user: preloadedUser,
-      token: preloadedToken,
+      access_token: preloadedAccess_token,
+      refresh_token: preloadedRefresh_token,
       loading: false,
       error: null,
     },
