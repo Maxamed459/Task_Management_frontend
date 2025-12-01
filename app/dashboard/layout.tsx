@@ -5,10 +5,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import {Sidebar, SidebarItem} from "@/components/Sidebar";
-import { ChevronFirst, CircleCheckBig, CopyPlus, HelpCircle, Home, LifeBuoy, ListChecks, Settings } from "lucide-react";
+import { CircleCheckBig, CopyPlus, HelpCircle, Home, LifeBuoy, ListChecks, Settings } from "lucide-react";
 import ExpandIcon from "@/components/ExpandIcon";
 import { SidebarProvider } from "@/components/providers/SidebarProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import DashboardShell from "@/components/DashShell";
 
 const queryClient = new QueryClient()
 
@@ -37,21 +38,11 @@ export default function DashboardLayout({children}: {
             
             <Providers>
               <SidebarProvider>
-              <div className="flex relative">
-                <Sidebar>
-                  <SidebarItem icon={<Home size={20} />} text="Dashboard" href="/dashboard"/>
-                  <SidebarItem icon={<CopyPlus size={20} />} text="Add Task" href="/dashboard/add-tasks" />
-                  <SidebarItem icon={<ListChecks size={20} />} text="My Tasks" href="/dashboard/tasks" />
-                  <SidebarItem icon={<CircleCheckBig size={20} />} text="Completed Tasks" href="/dashboard/completed-tasks" />
-                  <hr className="my-3" />
-                  <SidebarItem icon={<Settings size={20} />} text="Settings" href="/dashboard/settings" />
-                  <SidebarItem icon={<HelpCircle size={20} />} text="Help" href="/dashboard/help" />
-                </Sidebar>
-                <ExpandIcon />
-                  <QueryClientProvider  client={queryClient}>
-                    {children}
-                  </QueryClientProvider>
-              </div>
+              <QueryClientProvider client={queryClient}>
+                <DashboardShell>
+                  {children}
+                </DashboardShell>
+              </QueryClientProvider>
             </SidebarProvider>
             </Providers>
             
