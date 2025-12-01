@@ -15,7 +15,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
         <aside className={`h-screen ${
             expanded ? "w-75" : "w-0 hidden"
         }`}>
-            <nav className="h-screen flex flex-col bg-white border-r border-r-black/10 shadow-sm">
+            <nav className="h-full fixed flex flex-col bg-white border-r border-r-black/10 shadow-sm">
                 <div className="p-4 pb-2 flex items-center justify-between">
                     <Image
                         src="/task_logo.png"
