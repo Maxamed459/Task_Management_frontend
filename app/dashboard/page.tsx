@@ -6,14 +6,14 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Dashboard() {
-  const {user} = useAppSelector((state) => state.auth)
+  const { user } = useAppSelector((state) => state.auth)
   const router = useRouter()
 
   useEffect(() => {
-      if (!user) {
-        router.push("/auth/login");
-      }
-    }, [user, router]); 
+    if (!user) {
+      router.push("/auth/login");
+    }
+  }, [user, router]);
   return (
     <div className="flex-1 w-full p-4 mt-8">
       <div className="leading-relaxed">
@@ -99,7 +99,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        
+
       </div>
     </div>
   );
