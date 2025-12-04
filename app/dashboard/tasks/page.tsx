@@ -4,6 +4,7 @@ import { Task } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { CircleCheckBig, } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 
 
@@ -39,12 +40,17 @@ export default function() {
       return <p className="text-red-600 mt-8 p-4">Error: {error.message}</p>
     } 
     console.log()
+
+    const router = useRouter();
     
     return(
       <div className="p-4 mt-8">
       <div className="grid gap-2 grid-cols-1 sm:grid-cols-2">
         {data.map((task: Task) => (
           <div
+          onClick={() => {
+            router.push(`/dashboard/tasks/${task.id}`);
+          }}
             key={task.id}
             className="bg-white border border-green-100 shadow-md hover:shadow-lg transition-shadow duration-300 p-6 rounded-xl flex items-start gap-4 relative overflow-hidden"
           >
