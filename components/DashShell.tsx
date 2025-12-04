@@ -12,7 +12,7 @@ export default function DashboardShell({
 }) {
 
   return (
-    <div className="w-full relative flex h-screen">
+    <div className="w-full flex h-screen">
         <Sidebar>
             <SidebarItem icon={<Home size={20} />} text="Dashboard" href="/dashboard" />
             <SidebarItem icon={<CopyPlus size={20} />} text="Add Task" href="/dashboard/add-tasks" />
