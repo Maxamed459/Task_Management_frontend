@@ -41,8 +41,7 @@ export default function updateTaskPage() {
         setTAskData((prev) => ({ ...prev, [field]: value}));
     };
 
-    // Placeholder for the createTask function
-    const createTask = async (data: typeof taskData) => {
+    const updateTask = async (data: typeof taskData) => {
         Swal.fire({
             title: "Please wait...",
             text: "updating the task",
@@ -61,6 +60,36 @@ export default function updateTaskPage() {
                 Swal.fire({
                     icon: "success",
                     title: "Task updated successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                router.push("/dashboard/tasks");
+            }
+            return res.data;
+        } catch (error) {
+            console.log("Error creating task:", error);
+            throw error;
+        }
+    };
+    const deleteTask = async (id: string) => {
+        Swal.fire({
+            title: "Please wait...",
+            text: "deleting the task",
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+        try {
+            const res = await axios.delete(`${BACKEND_BASE_URL_TASKS}/${id}/`, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                },
+            });
+            if (res.status === 204) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Task deleted successfully",
                     showConfirmButton: false,
                     timer: 1500,
                 });
@@ -92,11 +121,9 @@ export default function updateTaskPage() {
         }
     })
 
-    console.log(data);
-    console.log(taskData);
 
-    const mutation = useMutation({
-        mutationFn: createTask,
+    const updateMutation = useMutation({
+        mutationFn: updateTask,
         onSuccess: () => {
             setTAskData({
                 title: "",
@@ -122,14 +149,50 @@ export default function updateTaskPage() {
             }
             setGeneralError((err as Error).message);
         }
-    })
+    }) 
+    const deleteMutation = useMutation({
+        mutationFn: deleteTask,
+        onSuccess: () => {
+            setTAskData({
+                title: "",
+                description: "",
+                due_date: "",
+                priority: "",
+                is_completed: "",
+            });
+        },
+        onError: (err) => {
+            if (axios.isAxiosError(err) && err.response?.data) {
+                const errData = err.response.data;
+                if (typeof errData === "object") {
+                    setFieldErrors(errData as Record<string, string[]>);
+                    return;
+                }
+                if ((errData as any).message) {
+                    setGeneralError((errData as any).message);
+                    return;
+                }
+                setGeneralError(String(errData));
+                return;
+            }
+            setGeneralError((err as Error).message);
+        }
+    }) 
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setFieldErrors(null);
         setGeneralError(null);
-        mutation.mutate(taskData);
+        updateMutation.mutate(taskData);
     };
+    const deleteSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setFieldErrors(null);
+        setGeneralError(null);
+        deleteMutation.mutate(id);
+    };
+
+
 
     return (
         <div className="p-4 mt-8 flex items-center justify-center h-sreen w-full">
@@ -173,8 +236,10 @@ export default function updateTaskPage() {
                         </select>
                         
                     </div>
-                    
-                    <button type="submit" className="p-2 bg-linear-to-tr from-blue-600 to-purple-800 rounded-md text-white text-[16px] font-semibold">{mutation.status === "pending" ? "Updating..." : "Update task"}</button>
+                    <button type="submit" className="p-2 bg-linear-to-tr from-blue-600 to-purple-800 rounded-md text-white text-[16px] font-semibold">{updateMutation.status === "pending" ? "Updating..." : "Update task"}</button>
+                </form>
+                <form onSubmit={deleteSubmit}>
+                    <button type="submit" className="p-2 bg-linear-to-tr from-red-600 to-pink-800 rounded-md text-white w-full mt-4 text-[16px] font-semibold">{deleteMutation.status === "pending" ? "deleting..." : "Delete task"}</button>
                 </form>
             </div>
         </div>
