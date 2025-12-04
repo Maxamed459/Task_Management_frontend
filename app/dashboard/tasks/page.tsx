@@ -1,4 +1,5 @@
 "use client"
+import Loading from "@/components/Loading";
 import { useAppSelector } from "@/state/store";
 import { Task } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +13,7 @@ export default function() {
   // const [tasks, setTasks] = useState<Task[]>([]);
   const { access_token } = useAppSelector((state) => state.auth);
   const NEXT_PUBLIC_BACKEND_BASE_URL_TASKS = process.env.NEXT_PUBLIC_BACKEND_BASE_URL_TASKS;
-
+  const router = useRouter();
     const fetchTasks = async () => {
       try {
         const res = await axios.get(`${NEXT_PUBLIC_BACKEND_BASE_URL_TASKS}`, {
@@ -33,15 +34,13 @@ export default function() {
     })
 
     if (isPending) {
-      return <span className="mt-8 p-4">Loading...</span>
+      return <Loading />
     }
 
     if (isError) {
       return <p className="text-red-600 mt-8 p-4">Error: {error.message}</p>
     } 
-    console.log()
-
-    const router = useRouter();
+    
     
     return(
       <div className="p-4 mt-8">
@@ -52,11 +51,13 @@ export default function() {
             router.push(`/dashboard/tasks/${task.id}`);
           }}
             key={task.id}
-            className="bg-white border border-green-100 shadow-md hover:shadow-lg transition-shadow duration-300 p-6 rounded-xl flex items-start gap-4 relative overflow-hidden"
+            className="bg-white border cursor-pointer border-green-100 shadow-md hover:shadow-lg transition-shadow duration-300 p-6 rounded-xl flex items-start gap-4 relative overflow-hidden"
           >
             {/* Main info */}
             <div className="flex-1">
-              <h2 className="text-lg font-semibold text-blue-700 flex items-center">
+              <h2 className="text-lg font-semibold text-blue-700 flex items-center cursor-pointer" onClick={() => {
+            router.push(`/dashboard/tasks/${task.id}`);
+          }}>
                 {task.title} <PriorityBadge priority={task.priority} />
               </h2>
               <p className="mt-1 text-gray-500 text-sm">{task.description}</p>
@@ -77,7 +78,7 @@ export default function() {
     );
 }
 
-function PriorityBadge({ priority }: { priority: string }) {
+export function PriorityBadge({ priority }: { priority: string }) {
     let color = "";
     switch(priority){
       case "high": color = "bg-red-100 text-red-600"; break;
