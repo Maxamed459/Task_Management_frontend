@@ -4,9 +4,11 @@ import { useAppSelector } from "@/state/store";
 import axios from "axios";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function AddTasksPage() {
-
+    const router = useRouter()
     const [taskData, setTAskData] = useState({
         title: "",
         description: "",
@@ -15,7 +17,7 @@ export default function AddTasksPage() {
         is_completed: "",
     });
     const {user, error, loading, access_token} = useAppSelector((state) => state.auth)
-    const BACKEND_BASE_URL_TASKS = process.env.BACKEND_BASE_URL_TASKS;
+    const BACKEND_BASE_URL_TASKS = process.env.NEXT_PUBLIC_BACKEND_BASE_URL_TASKS;
     const [fieldErrors, setFieldErrors] = useState<Record<string, string[]> | null>(null);
     const [generalError, setGeneralError] = useState<string | null>(null);
 
@@ -38,13 +40,41 @@ export default function AddTasksPage() {
     
 
     const createTask = async (data: typeof taskData) => {
-        const url = BACKEND_BASE_URL_TASKS ?? "http://localhost:8000/api/tasks/";
-        const res = await axios.post(url, data, {
+        Swal.fire({
+                    title: "Please wait...",
+                    text: "Creating the task",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                      Swal.showLoading();
+                    },
+                  });
+        try {
+            const res = await axios.post(`${BACKEND_BASE_URL_TASKS}/`, data, {
             headers: {
                 Authorization: `Bearer ${access_token}`,
             },
         });
+        if (res.status === 201) {
+            Swal.fire({
+                icon: "success",
+                title: "Task created successfully",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+            router.push("/dashboard/tasks");
+        }
         return res.data;
+
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Task creating error",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+            throw(error)
+        }
+        
     };
 
     const mutation = useMutation({
