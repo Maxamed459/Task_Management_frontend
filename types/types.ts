@@ -30,9 +30,13 @@ export interface authState {
 }
 
 export interface Task {
+  owner: string;
+  id: number;
   title: string;
   description: string;
   due_date: string;
   priority: string;
   is_completed: boolean;
+  created_at: string;
+  updated_at: string;
 }
