@@ -4,7 +4,7 @@ export default function Loading() {
     const Ammount: number[] = [1, 2, 3, 4];
     return ( 
         <div className="p-4 mt-8">
-              <div className="grid gap-2 grid-cols-1 sm:grid-cols-2">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
                 {Ammount.map((amm) => (
                   <div
                     key={amm}
