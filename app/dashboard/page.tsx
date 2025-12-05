@@ -46,6 +46,9 @@ export default function Dashboard() {
     if (!user) {
       router.push("/auth/login");
     }
+
+    const now = new Date().toISOString().split("T")[0]
+
   return (
     <div className="flex-1 w-full p-4 mt-8">
       <div className="leading-relaxed">
@@ -79,7 +82,8 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="grid gap-4 grid-cols-1 mt-6">
-        {data.map((task: Task) => (
+        <h2 className="text-sm sm:text-xl md:text-2xl font-semibold">Todays tasks</h2>
+        {data.filter((task: Task) => task.due_date === now ).map((task: Task) => (
             <TaskCards key={task.id} id={task.id} title={task.title} description={task.description} priority={task.priority} due_date={task.due_date} is_completed={task.is_completed} />
         ))}
       </div>
